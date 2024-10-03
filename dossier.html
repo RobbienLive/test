@@ -1,0 +1,896 @@
+!DOCTYPE html>
+<html>
+<head>
+<title>dossier.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="robbe-van-duysen-202289876---front-end-web-development-en-webservices">Robbe Van Duysen (202289876) - <em>Front-end web development en webservices</em></h1>
+<ul>
+<li><input type="checkbox" id="checkbox0" checked="true"><label for="checkbox0">Front-end Web Development</label>
+<ul>
+<li><a href="https://github.com/Web-IV/2324-frontendweb-RobbienLiveStudent">https://github.com/Web-IV/2324-frontendweb-RobbienLiveStudent</a></li>
+<li><a href="https://two324-frontendweb-robbienlivestudent.onrender.com/">https://two324-frontendweb-robbienlivestudent.onrender.com/</a></li>
+</ul>
+</li>
+<li><input type="checkbox" id="checkbox1" checked="true"><label for="checkbox1">Web Services: GITHUB URL</label>
+<ul>
+<li><a href="https://github.com/Web-IV/2324-webservices-RobbienLiveStudent">https://github.com/Web-IV/2324-webservices-RobbienLiveStudent</a></li>
+<li><a href="https://two324-webservices-robbienlivestudent.onrender.com">https://two324-webservices-robbienlivestudent.onrender.com</a></li>
+</ul>
+</li>
+</ul>
+<p><strong>Logingegevens</strong></p>
+<p>*Normale gebruiker (rol: user):</p>
+<ul>
+<li>E-mailadres: <code>test1@tester.com</code></li>
+<li>Wachtwoord: <code>Wachtwoord1$</code></li>
+</ul>
+<p><em>Administrator (rol: admin en user):</em></p>
+<ul>
+<li>E-mailadres: <code>robbe.vanduysen@gmail.com</code></li>
+<li>Wachtwoord: <code>12345678</code></li>
+</ul>
+<blockquote>
+<p>Er is de mogelijkheid om nieuwe gebruikers (met rol: user) aan te maken. Deze kunnen dan inloggen met de gegevens die ze zelf hebben ingegeven.<br/>
+Eventueel kan u zelf een nieuwe gebruiker aanmaken en deze gebruiken om in te loggen.</p>
+</blockquote>
+<h2 id="projectbeschrijving">Projectbeschrijving</h2>
+<p>Mijn bedoeling met dit project was om een systeem te ontwikkelen waarop scouts zich konden inschrijven voor evenementen die op nationaal georgaseerd worden. Op dit moment wordt er gebruik gemaakt van <a href="https://gseb.assoconnect.com/page/870136-accueil-onthaal">Assoconnect</a>. Hierop heb ik mij dan ook voornamelijk gebaseerd om de functionaliteiten te bepalen.</p>
+<h3 id="functionaliteiten">Functionaliteiten</h3>
+<ul>
+<li>
+<p>Algemeen</p>
+<ul>
+<li>Aanmaken van een nieuwe gebruiker/scout</li>
+<li>Inloggen met een bestaande gebruiker</li>
+<li>Bekijken van evenementen</li>
+</ul>
+</li>
+<li>
+<p>Gebruiker/scout</p>
+<ul>
+<li>In- en uitschrijven voor een evenement</li>
+<li>Eigen gegevens bekijken en aanpassen</li>
+<li>Bekijken van de evenementen waarvoor je bent ingeschreven</li>
+</ul>
+</li>
+<li>
+<p>Administrator</p>
+<ul>
+<li>Aanmaken van een nieuw evenement</li>
+<li>Aanpassen van een bestaand evenement</li>
+<li>Verwijderen van een bestaand evenement</li>
+<li>Bekijken van alle scouts die ingeschreven zijn voor een evenement</li>
+<li>Aanmaken van een nieuwe groep</li>
+<li>Aanpassen van een bestaande groep</li>
+<li>Verwijderen van een bestaande groep</li>
+<li>Bekijken van alle scouts die lid zijn van een groep</li>
+</ul>
+</li>
+</ul>
+<h3 id="erd">ERD</h3>
+<p><img src="screenshots_dossier/ERD.png" alt="ERD Back-end"></p>
+<h2 id="screenshots">Screenshots</h2>
+<h3 id="algemeen">Algemeen</h3>
+<p>Homepagina met navigatiebar (<em>Past zichzelf aan naargelang de rol van de gebruiker en of deze al dan niet is ingelogd</em>)
+<img src="screenshots_dossier/image-12.png" alt="Startpagina - niet ingeschreven">
+Inloggen
+<img src="screenshots_dossier/image-1.png" alt="Inlogscherm"></p>
+<p>Als iemand die is ingelogd, iets wilt verwijderen (groep, evenement, gebruiker) krijgt deze een bevestigingspagina te zien.
+<img src="screenshots_dossier/image-7.png" alt="Bevestigingspagina voor het verwijderen van een item"></p>
+<h3 id="gebruikerscout">Gebruiker/scout</h3>
+<p>Homepagina met navigatiebalk
+<img src="screenshots_dossier/image-11.png" alt="Homepagina met navigatiebalk"></p>
+<p>Evenementen
+<img src="screenshots_dossier/image-2.png" alt="Overzicht evenementen met zoekfunctie">
+<img src="screenshots_dossier/image-9.png" alt="Informatie om in te schrijven">
+<img src="screenshots_dossier/image-5.png" alt="Bevestiging van inschrijving + betaalgegevens"></p>
+<p>Ovezicht ingeschrijvingen
+<img src="screenshots_dossier/image-10.png" alt="Overzicht ingeschrijvingen met optie om inschrijving te annuleren"></p>
+<p>Bekijken en aanpassen van eigen gegevens
+<img src="screenshots_dossier/image-8.png" alt="Bekijken en aanpassen van eigen gegevens"></p>
+<h3 id="administrator">Administrator</h3>
+<p>Homepagina met navigatiebalk
+<img src="screenshots_dossier/image-13.png" alt="Homepagina met navigatiebar"></p>
+<p>Overzicht evenementen met optie om een nieuw evenement aan te maken
+<img src="screenshots_dossier/image-14.png" alt="Overzicht evenementen met optie om een nieuw evenement aan te maken"></p>
+<p>Formulier om een nieuw evenement aan te maken
+<img src="screenshots_dossier/image-15.png" alt="Formulier om een nieuw evenement aan te maken"></p>
+<p>Info over een evenement met optie om dit aan te passen of te verwijderen
+<img src="screenshots_dossier/image-16.png" alt="Info over een evenement met optie om dit aan te passen of te verwijderen"></p>
+<p>Aanpassen van een evenement met eventuele foutmelding
+<img src="screenshots_dossier/image-18.png" alt="Aanpassen van een evenement met eventuele foutmelding"></p>
+<p>Overzicht evenementen met het aantal ingeschreven scouts
+<img src="screenshots_dossier/image-19.png" alt="Overzicht evenementen met het aantal ingeschreven scouts"></p>
+<p>Overzicht groepen met optie om een nieuwe groep aan te maken, te verwijderen of aan te passen
+<img src="screenshots_dossier/image-20.png" alt="Overzicht groepen met optie om een nieuwe groep aan te maken, te verwijderen of aan te passen"></p>
+<p>Formulier om een nieuwe groep aan te maken met eventuele foutmelding
+<img src="screenshots_dossier/image-22.png" alt="Formulier om een nieuwe groep aan te maken met eventuele foutmelding"></p>
+<p>Formulier om een bestaande groep aan te passen
+<img src="screenshots_dossier/image-23.png" alt="Formulier om een bestaande groep aan te passen"></p>
+<p>Overzicht van de leden ingeschreven in een groep
+<img src="screenshots_dossier/image-24.png" alt="Overzicht van de leden ingeschreven in een groep"></p>
+<h2 id="api-calls">API calls</h2>
+<h3 id="group">Group</h3>
+<ul>
+<li><code>GET /api/groups</code> : alle groepen ophalen</li>
+<li><code>GET /api/groups/:id</code> : één bepaalde groep ophalen</li>
+<li><code>POST /api/groups</code> : een nieuwe groep toevoegen</li>
+<li><code>PUT /api/groups/:id</code> : een bestaande groep aanpassen</li>
+<li><code>DELETE /api/groups/:id</code> : een bestaande groep verwijderen</li>
+</ul>
+<h3 id="scout">Scout</h3>
+<ul>
+<li><code>GET /api/scouts</code> : alle scouts ophalen</li>
+<li><code>GET /api/scouts/:id</code> : één bepaalde scout ophalen</li>
+<li><code>GET /api/scouts/group/:id</code> : alle scouts van een bepaalde groep ophalen</li>
+<li><code>POST /api/scouts</code> : een nieuwe scout toevoegen</li>
+<li><code>PUT /api/scouts/:id</code> : een bestaande scout aanpassen</li>
+<li><code>DELETE /api/scouts/:id</code> : een bestaande scout verwijderen</li>
+</ul>
+<h3 id="events">Events</h3>
+<ul>
+<li><code>GET /api/events</code> : alle events ophalen</li>
+<li><code>GET /api/events/:id</code> : één bepaald event ophalen</li>
+<li><code>POST /api/events</code> : een nieuw event toevoegen</li>
+<li><code>PUT /api/events/:id</code> : een bestaand event aanpassen</li>
+<li><code>DELETE /api/events/:id</code> : een bestaand event verwijderen</li>
+</ul>
+<h3 id="inschrijvingen">Inschrijvingen</h3>
+<ul>
+<li><code>GET /api/events/inschrijvingen/:id</code> : alle inschrijvingen van een bepaald event ophalen</li>
+<li><code>GET /api/events/inschrijvingen/scout</code> : alle inschrijvingen van een bepaalde scout ophalen</li>
+<li><code>POST /api/events/inschrijvingen</code> : een nieuwe inschrijving toevoegen</li>
+<li><code>DELETE /api/events/inschrijvingen/:id</code> : een bestaande inschrijving verwijderen</li>
+</ul>
+<h2 id="behaalde-minimumvereisten">Behaalde minimumvereisten</h2>
+<h3 id="front-end-web-development">Front-end Web Development</h3>
+<ul>
+<li>
+<p><strong>Componenten</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox2" checked="true"><label for="checkbox2">heeft meerdere componenten - dom &amp; slim (naast login/register)</label></li>
+<li><input type="checkbox" id="checkbox3" checked="true"><label for="checkbox3">applicatie is voldoende complex</label></li>
+<li><input type="checkbox" id="checkbox4" checked="true"><label for="checkbox4">definieert constanten (variabelen, functies en componenten) buiten de component</label></li>
+<li><input type="checkbox" id="checkbox5" checked="true"><label for="checkbox5">minstens één form met meerdere velden met validatie (naast login/register)</label></li>
+<li><input type="checkbox" id="checkbox6" checked="true"><label for="checkbox6">login systeem</label></li>
+</ul>
+</li>
+<li>
+<p><strong>Routing</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox7" checked="true"><label for="checkbox7">heeft minstens 2 pagina's (naast login/register)</label></li>
+<li><input type="checkbox" id="checkbox8" checked="true"><label for="checkbox8">routes worden afgeschermd met authenticatie en autorisatie</label></li>
+</ul>
+</li>
+<li>
+<p><strong>State-management</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox9" checked="true"><label for="checkbox9">meerdere API calls (naast login/register)</label></li>
+<li><input type="checkbox" id="checkbox10" checked="true"><label for="checkbox10">degelijke foutmeldingen indien API-call faalt</label></li>
+<li><input type="checkbox" id="checkbox11" checked="true"><label for="checkbox11">gebruikt useState enkel voor lokale state</label></li>
+<li><input type="checkbox" id="checkbox12" checked="true"><label for="checkbox12">gebruikt gepast state management voor globale state - indien van toepassing</label></li>
+</ul>
+</li>
+<li>
+<p><strong>Hooks</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox13" checked="true"><label for="checkbox13">gebruikt de hooks op de juiste manier</label></li>
+</ul>
+</li>
+<li>
+<p><strong>Varia</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox14" checked="true"><label for="checkbox14">een aantal niet-triviale e2e testen</label></li>
+<li><input type="checkbox" id="checkbox15" checked="true"><label for="checkbox15">minstens één extra technologie</label></li>
+<li><input type="checkbox" id="checkbox16" checked="true"><label for="checkbox16">maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)</label></li>
+<li><input type="checkbox" id="checkbox17" checked="true"><label for="checkbox17">duidelijke en volledige README.md</label></li>
+<li><input type="checkbox" id="checkbox18" checked="true"><label for="checkbox18">volledig en tijdig ingediend dossier en voldoende commits</label></li>
+</ul>
+</li>
+</ul>
+<h3 id="web-services">Web Services</h3>
+<ul>
+<li>
+<p><strong>Datalaag</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox19" checked="true"><label for="checkbox19">voldoende complex (meer dan één tabel, 2 een-op-veel of veel-op-veel relaties)</label></li>
+<li><input type="checkbox" id="checkbox20" checked="true"><label for="checkbox20">één module beheert de connectie + connectie wordt gesloten bij sluiten server</label></li>
+<li><input type="checkbox" id="checkbox21" checked="true"><label for="checkbox21">heeft migraties - indien van toepassing</label></li>
+<li><input type="checkbox" id="checkbox22" checked="true"><label for="checkbox22">heeft seeds</label></li>
+</ul>
+</li>
+<li>
+<p><strong>Repositorylaag</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox23" checked="true"><label for="checkbox23">definieert één repository per entiteit (niet voor tussentabellen) - indien van toepassing</label></li>
+<li><input type="checkbox" id="checkbox24" checked="true"><label for="checkbox24">mapt OO-rijke data naar relationele tabellen en vice versa - indien van toepassing</label></li>
+</ul>
+</li>
+<li>
+<p><strong>Servicelaag met een zekere complexiteit</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox25" checked="true"><label for="checkbox25">bevat alle domeinlogica</label></li>
+<li><input type="checkbox" id="checkbox26" checked="true"><label for="checkbox26">bevat geen SQL-queries of databank-gerelateerde code</label></li>
+</ul>
+</li>
+<li>
+<p><strong>REST-laag</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox27" checked="true"><label for="checkbox27">meerdere routes met invoervalidatie</label></li>
+<li><input type="checkbox" id="checkbox28" checked="true"><label for="checkbox28">degelijke foutboodschappen</label></li>
+<li><input type="checkbox" id="checkbox29" checked="true"><label for="checkbox29">volgt de conventies van een RESTful API</label></li>
+<li><input type="checkbox" id="checkbox30" checked="true"><label for="checkbox30">bevat geen domeinlogica</label></li>
+<li><input type="checkbox" id="checkbox31" checked="true"><label for="checkbox31">geen API calls voor entiteiten die geen zin hebben zonder hun ouder (bvb tussentabellen)</label></li>
+<li><input type="checkbox" id="checkbox32" checked="true"><label for="checkbox32">degelijke authorisatie/authenticatie op alle routes</label></li>
+</ul>
+</li>
+<li>
+<p><strong>Algemeen</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox33" checked="true"><label for="checkbox33">er is een minimum aan logging voorzien</label></li>
+<li><input type="checkbox" id="checkbox34" checked="true"><label for="checkbox34">een aantal niet-triviale integratietesten (min. 1 controller &gt;=80% coverage)</label></li>
+<li><input type="checkbox" id="checkbox35" checked="true"><label for="checkbox35">minstens één extra technologie</label></li>
+<li><input type="checkbox" id="checkbox36" checked="true"><label for="checkbox36">maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)</label></li>
+<li><input type="checkbox" id="checkbox37" checked="true"><label for="checkbox37">duidelijke en volledige README.md</label></li>
+<li><input type="checkbox" id="checkbox38" checked="true"><label for="checkbox38">volledig en tijdig ingediend dossier en voldoende commits</label></li>
+</ul>
+</li>
+</ul>
+<h2 id="projectstructuur">Projectstructuur</h2>
+<h3 id="front-end-web-development">Front-end Web Development</h3>
+<p><strong>Mappen:</strong></p>
+<ul>
+<li>cypress/e2e: <code>-&gt; alle testen</code></li>
+<li>screenshots_dossier: <code>-&gt; alle screenshots die in dit dossier gebruikt worden</code></li>
+<li>src:
+<ul>
+<li>api</li>
+<li>components: <code>-&gt; alle componenten</code>
+<ul>
+<li>event <code>-&gt; alle componenten die met evenementen te maken hebben</code>
+<ul>
+<li>admin <code>-&gt; alle componenten die enkel de admin kan zien (bv. aanmaken van een nieuw evenement)</code></li>
+<li>InfoEvent.jsx <code>-&gt; component om de info van een evenement te tonen</code></li>
+<li>Inschrijvingen.jsx <code>-&gt; component om effectief in te schrijven voor het evenement</code></li>
+</ul>
+</li>
+<li>group <code>-&gt; alle componenten die met groepen te maken hebben</code>
+<ul>
+<li>GroupList.jsx <code>-&gt; component om een overzicht van alle groepen te tonen</code></li>
+<li>ScoutOfGroupList.jsx <code>-&gt; component om een overzicht van alle leden van een bepaalde groep te tonen</code></li>
+</ul>
+</li>
+<li>login <code>-&gt; alles wat met inloggen te maken heeft</code></li>
+<li>scout <code>-&gt; alles wat met scouts te maken heeft</code>
+<ul>
+<li>inschrijvingen <code>-&gt; alle componenten die met inschrijvingen te maken hebben</code></li>
+</ul>
+</li>
+<li>...Algemene componenten <code>(bv. header, footer, ..., PrivateRoute)</code></li>
+</ul>
+</li>
+<li>contexts</li>
+<li>images
+<ul>
+<li>icons</li>
+</ul>
+</li>
+<li>pages</li>
+<li>Root.jsx</li>
+<li>main.jsx</li>
+<li>index.css</li>
+</ul>
+</li>
+</ul>
+<h3 id="web-services">Web Services</h3>
+<p><strong>Mappen:</strong></p>
+<ul>
+<li>__tests__: <code>-&gt; alle testen</code></li>
+<li>config: <code>-&gt; alle configuratiebestanden</code>
+<ul>
+<li>custom-environment-variables.js</li>
+<li>development.js</li>
+<li>production.js</li>
+</ul>
+</li>
+<li>src: <code>-&gt; alle code</code>
+<ul>
+<li>core: <code>-&gt; alle core bestanden zoals auth.js, validatoin.js, ...</code></li>
+<li>data: <code>-&gt; alles omtrent de databank</code>
+<ul>
+<li>migrations: <code>-&gt; alle migraties</code></li>
+<li>seeds: <code>-&gt; alle seeds</code></li>
+</ul>
+</li>
+<li>repository: <code>-&gt; alle repositories (van inschrijvingen, groepen, scouts, events)</code></li>
+<li>rest: <code>-&gt; alle rest bestanden</code></li>
+<li>service: <code>-&gt; alle service bestanden</code></li>
+<li>startup: <code>-&gt; alle opstartbestanden</code></li>
+<li>utils: <code>-&gt; alle hulpbestanden</code></li>
+<li>createServer.js</li>
+<li>index.js</li>
+<li>testjwt.js</li>
+<li>testpw.js</li>
+</ul>
+</li>
+</ul>
+<h2 id="extra-technologie">Extra technologie</h2>
+<h3 id="front-end-web-development">Front-end Web Development</h3>
+<ul>
+<li><a href="https://www.npmjs.com/package/prop-types">PropTypes</a> om de props van een component te valideren</li>
+<li><a href="https://www.npmjs.com/package/xlsx">SheetJS (<em>xlsx</em>)</a> om een excel bestand te genereren</li>
+</ul>
+<h3 id="web-services">Web Services</h3>
+<ul>
+<li><a href="https://jsdoc.app/">JSDoc</a> om de code te documenteren</li>
+</ul>
+<h2 id="testresultaten">Testresultaten</h2>
+<h3 id="front-end-web-development">Front-end Web Development</h3>
+<ul>
+<li>Event:
+<ul>
+<li>Controleren of creeër knop aanwezig is (enkel voor admin)</li>
+<li>Creeëren van een nieuw evenement met foute gegevens</li>
+<li>Creeëren van een nieuw evenement met correcte gegevens</li>
+<li>controleren of het evenement is toegevoegd aan de lijst</li>
+<li>aanpassen van een evenement</li>
+<li>controleren of het evenement is aangepast</li>
+<li>verwijderen van een evenement</li>
+</ul>
+</li>
+<li>Group:
+<ul>
+<li>Aanmelden als user (kan geen groepen aanmaken, enkel admin)</li>
+<li>Aanmakken van een nieuwe groep met eerst foute gegevens, dan correcte gegevens</li>
+<li>aanpassen van de info van een groep</li>
+<li>Verwijderen van een groep</li>
+</ul>
+</li>
+<li>Inschrijving:
+<ul>
+<li>Inschrijven voor een evenement</li>
+<li>Verwijderen van een inschrijving</li>
+</ul>
+</li>
+<li>Scout:
+<ul>
+<li>Mogelijk om naar registratiepagina te gaan</li>
+<li>Registreren met foute gegevens</li>
+<li>Registreren met correcte gegevens</li>
+<li>Inloggen</li>
+<li>Aanpassen van gegevens</li>
+</ul>
+</li>
+<li>Spec:
+<ul>
+<li>Kijk of server online is</li>
+</ul>
+</li>
+</ul>
+<h3 id="web-services">Web Services</h3>
+<p>Events:</p>
+<ul>
+<li>GET all events</li>
+<li>GET by ID
+<ul>
+<li>ID bestaat</li>
+<li>ID bestaat niet <em>-&gt; faalt</em></li>
+<li>ID is geen nummer <em>-&gt; faalt</em></li>
+</ul>
+</li>
+<li>POST
+<ul>
+<li>Door admin</li>
+<li>Door user <em>-&gt; faalt</em></li>
+<li>Zonder token <em>-&gt; faalt</em></li>
+</ul>
+</li>
+<li>PUT
+<ul>
+<li>Door admin</li>
+<li>Door user <em>-&gt; faalt</em></li>
+<li>Zonder token <em>-&gt; faalt</em></li>
+</ul>
+</li>
+<li>DELETE
+<ul>
+<li>Door admin</li>
+<li>Door user <em>-&gt; faalt</em></li>
+<li>Zonder token <em>-&gt; faalt</em></li>
+</ul>
+</li>
+</ul>
+<p>Groups:</p>
+<ul>
+<li>GET all groups</li>
+<li>GET by ID
+<ul>
+<li>ID bestaat</li>
+<li>ID bestaat niet <em>-&gt; faalt</em></li>
+</ul>
+</li>
+<li>POST
+<ul>
+<li>Door admin</li>
+<li>Door user <em>-&gt; faalt</em></li>
+<li>Zonder token <em>-&gt; faalt</em></li>
+</ul>
+</li>
+<li>PUT
+<ul>
+<li>Door admin</li>
+<li>Door user <em>-&gt; faalt</em></li>
+<li>Zonder token <em>-&gt; faalt</em></li>
+</ul>
+</li>
+<li>DELETE
+<ul>
+<li>Door admin</li>
+<li>Door user <em>-&gt; faalt</em></li>
+<li>Zonder token <em>-&gt; faalt</em></li>
+</ul>
+</li>
+</ul>
+<p>Heathcheck:</p>
+<ul>
+<li>GET ping
+<ul>
+<li>return pong</li>
+</ul>
+</li>
+<li>GET version
+<ul>
+<li>controleerd env, version en name</li>
+</ul>
+</li>
+</ul>
+<p>Inschrijvingen:</p>
+<ul>
+<li>GET all inschrijvingen van een event
+<ul>
+<li>Door admin</li>
+<li>Door user <em>-&gt; faalt</em></li>
+<li>ID is geen nummer <em>-&gt; faalt</em></li>
+<li>Zonder token <em>-&gt; faalt</em></li>
+</ul>
+</li>
+<li>GET all inschrijvingen van een scout
+<ul>
+<li>Door user (eigen ID)</li>
+<li>Zonder token <em>-&gt; faalt</em></li>
+</ul>
+</li>
+<li>POST
+<ul>
+<li>Door user (eigen ID)</li>
+<li>Zonder token <em>-&gt; faalt</em></li>
+</ul>
+</li>
+<li>DELETE
+<ul>
+<li>Door user</li>
+<li>Zonder token <em>-&gt; faalt</em></li>
+</ul>
+</li>
+</ul>
+<p>Scouts:</p>
+<ul>
+<li>GET all scouts
+<ul>
+<li>Door admin</li>
+<li>Door user <em>-&gt; faalt</em></li>
+<li>Zonder token <em>-&gt; faalt</em></li>
+</ul>
+</li>
+<li>GET by ID
+<ul>
+<li>Door user (eigen ID)</li>
+<li>Door user (andere ID) <em>-&gt; faalt</em></li>
+<li>ID bestaat niet <em>-&gt; faalt</em></li>
+<li>ID is geen nummer <em>-&gt; faalt</em></li>
+<li>Zonder token <em>-&gt; faalt</em></li>
+</ul>
+</li>
+<li>POST</li>
+<li>PUT
+<ul>
+<li>Door user (eigen ID)</li>
+<li>Door user (andere ID) <em>-&gt; faalt</em></li>
+<li>ID bestaat niet <em>-&gt; faalt</em></li>
+<li>ID is geen nummer <em>-&gt; faalt</em></li>
+<li>Zonder token <em>-&gt; faalt</em></li>
+</ul>
+</li>
+<li>DELETE
+<ul>
+<li>Door admin</li>
+<li>Door user <em>-&gt; faalt</em></li>
+<li>Zonder token <em>-&gt; faalt</em></li>
+<li>ID bestaat niet <em>-&gt; faalt</em></li>
+<li>ID is geen nummer <em>-&gt; faalt</em></li>
+</ul>
+</li>
+<li>GET by group ID
+<ul>
+<li>Door admin</li>
+<li>Door user <em>-&gt; faalt</em></li>
+<li>Zonder token <em>-&gt; faalt</em></li>
+</ul>
+</li>
+</ul>
+<p><img src="screenshots_dossier/coverage_tests.png" alt="Coverage tests"></p>
+<h2 id="gekende-bugs">Gekende bugs</h2>
+<h3 id="front-end-web-development">Front-end Web Development</h3>
+<ul>
+<li>Als de jwt token expired is, wordt de gebruiker niet automatisch uitgelogd. De gebruiker kan dan nog steeds de pagina's bezoeken waarvoor hij/zij geautoriseerd was, maar geen gegevens ophalen vanuit de databank.</li>
+</ul>
+<h3 id="web-services">Web Services</h3>
+<ul>
+<li>Het is mogelijk dat de testen falen en onderstaande fout weergeven. Vaak als u de testen opnieuw uitvoert, zullen deze wel slagen.
+<img src="screenshots_dossier/foutmelding_testen.png" alt="Foutmelding testen"></li>
+</ul>
+
+</body>
+</html>
