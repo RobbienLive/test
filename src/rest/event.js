@@ -54,6 +54,7 @@ createEvent.validationScheme = {
     MaximumParticipants: Joi.number().min(0).required(),
   },
 };
+// {"EventName":"Test", "StartDate": DATETIME(2025-02-02), "EndDate": DATETIME(2025-02-02) "Location": "Gent", "Adress": "GEEEnt", "StartTime": "06:07", "EndTime": "07:08", "Price": 5, "MaximumParticipants": 500}
 
 /**
  * Gives the event with the given id
@@ -182,7 +183,6 @@ module.exports = (app) => {
   router.get("/", getAllEvents);
   router.post(
     "/",
-    validate(createEvent.validationScheme),
     createEvent
   );
   router.get("/:id", validate(getEventById.validationScheme), getEventById);
