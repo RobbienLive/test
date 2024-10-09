@@ -132,12 +132,12 @@ module.exports = function installUsersRoutes(app) {
 
   const requireAdmin = makeRequireRole(Role.ADMIN);
 
-  router.get("/", requireAuthentication, requireAdmin, getAllScout);
+  router.get("/", getAllScout);
   router.post("/", validate(createScout.validationScheme), validate(createScout.validationScheme), createScout);
-  router.get("/:id", requireAuthentication, checkScoutId, validate(getScoutById.validationScheme), getScoutById);
-  router.put("/:id", requireAuthentication, checkScoutId, validate(updateScout.validationScheme), updateScout);
-  router.delete("/:id", requireAuthentication, requireAdmin, validate(deleteScout.validationScheme), deleteScout);
-  router.get("/group/:id", requireAuthentication, requireAdmin, validate(getScoutByGroup.validationScheme), getScoutByGroup);
+  router.get("/:id", validate(getScoutById.validationScheme), getScoutById);
+  router.put("/:id", validate(updateScout.validationScheme), updateScout);
+  router.delete("/:id", validate(deleteScout.validationScheme), deleteScout);
+  router.get("/group/:id", validate(getScoutByGroup.validationScheme), getScoutByGroup);
 
   app.use(router.routes()).use(router.allowedMethods());
 };

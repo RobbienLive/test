@@ -182,50 +182,43 @@ module.exports = (app) => {
   router.get("/", getAllEvents);
   router.post(
     "/",
-    requireAuthentication,
-    requireAdmin,
     validate(createEvent.validationScheme),
     createEvent
   );
   router.get("/:id", validate(getEventById.validationScheme), getEventById);
   router.put(
     "/:id",
-    requireAuthentication,
-    requireAdmin,
     validate(updateEvent.validationScheme),
     updateEvent
   );
   router.delete(
     "/:id",
-    requireAuthentication,
-    requireAdmin,
     validate(deleteEvent.validationScheme),
     deleteEvent
   );
   //----------- Inschrijvingen ------------
   router.get(
     "/inschrijvingen/scout",
-    requireAuthentication,
+
     inschrijvingenByScout
   );
   router.get(
     "/inschrijvingen/:id",
-    requireAuthentication,
-    requireAdmin,
+
     validate(inschrijvingenByEvent.validationScheme),
     inschrijvingenByEvent
   );
 
   router.delete(
     "/inschrijvingen/scout/:id",
-    requireAuthentication,
+
     validate(deleteInschrijving.validationScheme),
     deleteInschrijving
   );
 
   router.post(
     "/inschrijvingen",
-    requireAuthentication,
+    
     validate(createInschrijving.validationScheme),
     createInschrijving
   );
