@@ -1,129 +1,49 @@
-const { tables, getKnex } = require("../data/index");
-const { patchById } = require("../service/event");
+const { getKnex, tables } = require("../data/index");
 
 /**
- *
- * @returns Array of all events
+ * Finds all events in the database
+ * @returns {Array} List of all events
  */
-
-const findAll = () => {
-  return getKnex()(tables.event).select().orderBy("startDate", "ASC");
+const findAll = async () => {
+  return await getKnex()(tables.event).select();
 };
 
 /**
- *
- * @param {Number} id EventID
- *
- * @returns {object} Event with the given id
+ * Finds the event by the given id
+ * @param {Number} id - EventID
+ * @returns {Object} Event with the given id
  */
-
 const findById = async (id) => {
-  const event = await getKnex()(tables.event).where("EventID", id).first();
-
-  return event;
+  return await getKnex()(tables.event).where("EventID", id).first();
 };
 
 /**
- *
- * @param {String} EventName - Name of the event
- * @param {Date} StartDate - Start date of the event
- * @param {Date} EndDate - End date of the event
- * @param {String} Location - Location of the event
- * @param {String} Adress - Adress of the event
- * @param {String} StartTime - Start time of the event
- * @param {String} EndTime - End time of the event
- * @param {Number} Price - Price of the event
- * @param {Number} MaximumParticipants - Maximum number of participants
- *
- * @returns {object} created event
+ * Creates a new event in the database
+ * @param {Object} event - Event to be created
+ * @returns {Number} The id of the created event
  */
-
-const create = async ({
-  EventName,
-  StartDate,
-  EndDate,
-  Location,
-  Adress,
-  StartTime,
-  EndTime,
-  Price,
-  MaximumParticipants,
-}) => {
-  const [id] = await getKnex()(tables.event).insert({
-    EventName,
-    StartDate,
-    EndDate,
-    Location,
-    Adress,
-    StartTime,
-    EndTime,
-    Price,
-    MaximumParticipants,
-  });
-
+const create = async (event) => {
+  const [id] = await getKnex()(tables.event).insert(event);
   return id;
 };
 
 /**
- *
+ * Updates the event by the given id
  * @param {Number} id - EventID
- * @param {String} EventName - Name of the event
- * @param {Date} StartDate - Start date of the event
- * @param {Date} EndDate - End date of the event
- * @param {String} Location - Location of the event
- * @param {String} Adress - Adress of the event
- * @param {String} StartTime - Start time of the event
- * @param {String} EndTime - End time of the event
- * @param {Number} Price - Price of the event
- * @param {Number} MaximumParticipants - Maximum number of participants
- *
- * @returns {object} updated event
+ * @param {Object} data - Data to update the event with
+ * @returns {Number} Number of updated rows
  */
-
-const updateById = async (
-  id,
-  {
-    EventName,
-    StartDate,
-    EndDate,
-    Location,
-    Adress,
-    StartTime,
-    EndTime,
-    Price,
-    MaximumParticipants,
-  }
-) => {
-  const result = await getKnex()(tables.event).where("EventID", id).update({
-    EventName,
-    StartDate,
-    EndDate,
-    Location,
-    Adress,
-    StartTime,
-    EndTime,
-    Price,
-    MaximumParticipants,
-  });
-
-  return result;
+const updateById = async (id, data) => {
+  return await getKnex()(tables.event).where("EventID", id).update(data);
 };
-const patchById = async (id, data) => {
-  // Only update the fields that are provided in the `data` object
-  const result = await getKnex()(tables.event).where("EventID", id).update(data);
-  return result;
-};
+
 /**
- *
+ * Deletes the event by the given id
  * @param {Number} id - EventID
- *
- * @returns {boolean} true if deleted
+ * @returns {Number} Number of deleted rows
  */
-
 const deleteById = async (id) => {
-  const rowsAffected = await getKnex()(tables.event).where("EventID", id).del();
-
-  return rowsAffected > 0;
+  return await getKnex()(tables.event).where("EventID", id).delete();
 };
 
 module.exports = {
@@ -132,5 +52,4 @@ module.exports = {
   create,
   updateById,
   deleteById,
-  patchById,
 };

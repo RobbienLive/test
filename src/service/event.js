@@ -3,11 +3,8 @@ const eventRepository = require("../repository/event");
 const InschrijvingRepository = require("../repository/inschrijving");
 
 /**
- * 
  * @returns Array of all events and the number of events
- * 
  */
-
 const getAll = async () => {
   const items = await eventRepository.findAll();
   return {
@@ -17,12 +14,9 @@ const getAll = async () => {
 };
 
 /**
- * 
  * @param {Number} id - EventID
- * 
  * @returns {object} Event with the given id
  */
-
 const getById = async (id) => {
   const item = await eventRepository.findById(id);
   if (!item) {
@@ -32,12 +26,9 @@ const getById = async (id) => {
 };
 
 /**
- * 
  * @param {Number} id - InschrijvingID 
- * 
  * @returns {object} Inschrijving with the given id
  */
-
 const getInschrijvingById = async (id) => {
   const item = await InschrijvingRepository.findById(id);
   if (!item) {
@@ -47,12 +38,9 @@ const getInschrijvingById = async (id) => {
 };
 
 /**
- * 
  * @param {Number} id - EventID
- * 
  * @returns {Array} All inschrijvingen of the event with the given id
  */
-
 const getInschrijvingByEventId = async (id) => {
   const item = await InschrijvingRepository.findByEventId(id);
   if (!item) {
@@ -62,12 +50,9 @@ const getInschrijvingByEventId = async (id) => {
 };
 
 /**
- * 
  * @param {Number} id - ScoutID
- * 
  * @returns {Array} All inschrijvingen of the scout with the given id
  */
-
 const getInschrijvingByScoutId = async (id) => {
   const items = await InschrijvingRepository.findByScoutId(id);
   if (!items) {
@@ -80,13 +65,10 @@ const getInschrijvingByScoutId = async (id) => {
 };
 
 /**
- * 
  * @param {Number} EventID - EventID
  * @param {Number} ScoutID - ScoutID
- * 
  * @returns {Object} created inschrijving
  */
-
 const createInschrijving = async ({ EventID, ScoutID }) => {
   const id = await InschrijvingRepository.create({
     EventID,
@@ -96,7 +78,6 @@ const createInschrijving = async ({ EventID, ScoutID }) => {
 };
 
 /**
- * 
  * @param {String} EventName - Name of the event
  * @param {Date} StartDate - Start date of the event
  * @param {Date} EndDate - End date of the event
@@ -106,10 +87,8 @@ const createInschrijving = async ({ EventID, ScoutID }) => {
  * @param {String} EndTime - End time of the event
  * @param {Number} Price - Price of the event
  * @param {Number} MaximumParticipants - Maximum number of participants
- * 
  * @returns {object} created event
  */
-
 const create = async ({
   EventName,
   StartDate,
@@ -136,7 +115,18 @@ const create = async ({
 };
 
 /**
- * 
+ * @param {Number} id - EventID
+ * @param {Object} data - Partial data for patching the event
+ * @returns {object} updated event
+ */
+const patchById = async (id, data) => {
+  const existingEvent = await getById(id);  // Fetch existing event data
+  const updatedData = { ...existingEvent, ...data }; // Merge existing with incoming data
+  await eventRepository.updateById(id, updatedData);
+  return getById(id);
+};
+
+/**
  * @param {Number} id - EventID
  * @param {String} EventName - Name of the event
  * @param {Date} StartDate - Start date of the event
@@ -147,10 +137,8 @@ const create = async ({
  * @param {String} EndTime - End time of the event
  * @param {Number} Price - Price of the event
  * @param {Number} MaximumParticipants - Maximum number of participants
- * 
  * @returns {object} updated event
  */
-
 const updateById = async (
   id,
   {
@@ -179,40 +167,23 @@ const updateById = async (
   return getById(id);
 };
 
-const patchById = async (id, data) => {
-  const existingEvent = await getById(id); // Fetch the existing event
-  const updatedData = { ...existingEvent, ...data }; // Merge the existing event with the new data
-  
-  await eventRepository.updateById(id, updatedData); // Update only with the merged data
-  return getById(id); // Return the updated event
-};
-
-
 /**
- * 
  * @param {Number} id - EventID
- * 
  * @returns {object} deleted event
  */
-
 const deleteById = async (id) => {
   const deleted = await eventRepository.deleteById(id);
-
   if (!deleted) {
     throw ServiceError.notFound(`Event with id ${id} not found`);
   }
 };
 
 /**
- * 
  * @param {Number} id - InschrijvingID
- * 
  * @returns {object} deleted inschrijving
  */
-
 const deleteInschrijvingById = async (id) => {
   const deleted = await InschrijvingRepository.deleteById(id);
-
   if (!deleted) {
     throw ServiceError.notFound(`Event with id ${id} not found`);
   }
