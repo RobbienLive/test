@@ -1,4 +1,5 @@
 const { tables, getKnex } = require("../data/index");
+const { patchById } = require("../service/event");
 
 /**
  *
@@ -107,7 +108,11 @@ const updateById = async (
 
   return result;
 };
-
+const patchById = async (id, data) => {
+  // Only update the fields that are provided in the `data` object
+  const result = await getKnex()(tables.event).where("EventID", id).update(data);
+  return result;
+};
 /**
  *
  * @param {Number} id - EventID
@@ -127,4 +132,5 @@ module.exports = {
   create,
   updateById,
   deleteById,
+  patchById,
 };

@@ -179,6 +179,15 @@ const updateById = async (
   return getById(id);
 };
 
+const patchById = async (id, data) => {
+  const existingEvent = await getById(id); // Fetch the existing event
+  const updatedData = { ...existingEvent, ...data }; // Merge the existing event with the new data
+  
+  await eventRepository.updateById(id, updatedData); // Update only with the merged data
+  return getById(id); // Return the updated event
+};
+
+
 /**
  * 
  * @param {Number} id - EventID
@@ -214,6 +223,7 @@ module.exports = {
   getById,
   create,
   updateById,
+  patchById,
   deleteById,
   getInschrijvingByEventId,
   getInschrijvingByScoutId,

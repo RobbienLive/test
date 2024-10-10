@@ -96,6 +96,11 @@ updateEvent.validationScheme = {
   },
 };
 
+const patchEvent = async (ctx) => {
+  ctx.body = await eventService.patchById(Number(ctx.params.id), {
+    ...ctx.request.body,
+  });
+};
 /**
  * Deletes the event with the given id
  */
@@ -191,6 +196,10 @@ module.exports = (app) => {
     validate(updateEvent.validationScheme),
     updateEvent
   );
+  router.patch(
+    "/:id",
+    patchEvent);
+
   router.delete(
     "/:id",
     validate(deleteEvent.validationScheme),
