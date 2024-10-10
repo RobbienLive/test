@@ -2,6 +2,7 @@ const Router = require("@koa/router");
 const eventService = require("../service/event");
 const validate = require("../core/validation");
 const Joi = require("joi");
+const Role = require("../core/roles");
 const { makeRequireRole, requireAuthentication } = require("../core/auth");
 
 /**
@@ -13,7 +14,18 @@ const getAllEvents = async (ctx) => {
 
 /**
  * Creates a new event
+ * @param {String} EventName - Name of the event
+ * @param {Date} StartDate - Start date of the event
+ * @param {Date} EndDate - End date of the event
+ * @param {String} Location - Location of the event
+ * @param {String} Adress - Adress of the event
+ * @param {String} StartTime - Start time of the event
+ * @param {String} EndTime - End time of the event
+ * @param {Number} Price - Price of the event
+ * @param {Number} MaximumParticipants - Maximum number of participants
+ *
  */
+
 const createEvent = async (ctx) => {
   const newEvent = await eventService.create({
     EventName: ctx.request.body.EventName,
@@ -42,10 +54,12 @@ createEvent.validationScheme = {
     MaximumParticipants: Joi.number().min(0).required(),
   },
 };
+// {"EventName":"Test", "StartDate": DATETIME(2025-02-02), "EndDate": DATETIME(2025-02-02) "Location": "Gent", "Adress": "GEEEnt", "StartTime": "06:07", "EndTime": "07:08", "Price": 5, "MaximumParticipants": 500}
 
 /**
  * Gives the event with the given id
  */
+
 const getEventById = async (ctx) => {
   ctx.body = await eventService.getById(Number(ctx.params.id));
 };
@@ -59,6 +73,7 @@ getEventById.validationScheme = {
 /**
  * Updates the event with the given id
  */
+
 const updateEvent = async (ctx) => {
   ctx.body = await eventService.updateById(Number(ctx.params.id), {
     ...ctx.request.body,
@@ -81,64 +96,140 @@ updateEvent.validationScheme = {
   },
 };
 
-/**
- * Partially updates the event with the given id
- */
 const patchEvent = async (ctx) => {
   ctx.body = await eventService.patchById(Number(ctx.params.id), {
     ...ctx.request.body,
   });
 };
-
 /**
  * Deletes the event with the given id
  */
+
 const deleteEvent = async (ctx) => {
   await eventService.deleteById(Number(ctx.params.id));
   ctx.status = 204;
 };
-
 deleteEvent.validationScheme = {
   params: {
     id: Joi.number().integer().positive().required(),
   },
 };
 
+/**
+ * Gives all inschrijvingen for the event with the given id
+ */
+
+const inschrijvingenByEvent = async (ctx) => {
+  ctx.body = await eventService.getInschrijvingByEventId(Number(ctx.params.id));
+};
+inschrijvingenByEvent.validationScheme = {
+  params: {
+    id: Joi.number().integer().positive().required(),
+  },
+};
+
+/**
+ * Gives all inschrijvingen for the scout with the given id
+ */
+
+const inschrijvingenByScout = async (ctx) => {
+  const { ScoutID } = ctx.state.session;
+  ctx.body = await eventService.getInschrijvingByScoutId(ScoutID);
+};
+
+/**
+ * Deletes the inschrijving with the given id
+ */
+
+const deleteInschrijving = async (ctx) => {
+  await eventService.deleteInschrijvingById(Number(ctx.params.id));
+  ctx.status = 204;
+};
+
+deleteInschrijving.validationScheme = {
+  params: {
+    id: Joi.number().integer().positive().required(),
+  },
+};
+
+/**
+ * Creates a new inschrijving
+ * @param {Number} EventID - EventID
+ * @param {Number} ScoutID - ScoutID
+ */
+
+const createInschrijving = async (ctx) => {
+  const { EventID, ScoutID } = ctx.request.body;
+  const newInschrijving = await eventService.createInschrijving({
+    ScoutID: ScoutID,
+    EventID: EventID,
+  });
+  ctx.body = newInschrijving;
+};
+createInschrijving.validationScheme = {
+  body: {
+    EventID: Joi.number().integer().positive().required(),
+    ScoutID: Joi.number().integer().positive().required(),
+  },
+};
+
+/**
+ * Install transaction routes in the given router.
+ *
+ * @param {Router} app - The parent router.
+ */
 module.exports = (app) => {
-  const router = new Router({ prefix: "/events" });
+  const router = new Router({
+    prefix: "/events",
+  });
+
+  const requireAdmin = makeRequireRole(Role.ADMIN);
 
   router.get("/", getAllEvents);
   router.post(
     "/",
-    requireAuthentication,
-    makeRequireRole("admin"),
-    validate(createEvent.validationScheme),
     createEvent
   );
-  router.get(
-    "/:id",
-    validate(getEventById.validationScheme),
-    getEventById
-  );
+  router.get("/:id", validate(getEventById.validationScheme), getEventById);
   router.put(
     "/:id",
-    requireAuthentication,
-    makeRequireRole("admin"),
     validate(updateEvent.validationScheme),
     updateEvent
   );
   router.patch(
     "/:id",
-    requireAuthentication,
-    makeRequireRole("admin"),
-    patchEvent
-  );
+    patchEvent);
+
   router.delete(
     "/:id",
-    requireAuthentication,
-    makeRequireRole("admin"),
     validate(deleteEvent.validationScheme),
     deleteEvent
+  );
+  //----------- Inschrijvingen ------------
+  router.get(
+    "/inschrijvingen/scout",
+
+    inschrijvingenByScout
+  );
+  router.get(
+    "/inschrijvingen/:id",
+
+    validate(inschrijvingenByEvent.validationScheme),
+    inschrijvingenByEvent
+  );
+
+  router.delete(
+    "/inschrijvingen/scout/:id",
+
+    validate(deleteInschrijving.validationScheme),
+    deleteInschrijving
+  );
+
+  router.post(
+    "/inschrijvingen",
+    
+    validate(createInschrijving.validationScheme),
+    createInschrijving
   );
 
   app.use(router.routes()).use(router.allowedMethods());
